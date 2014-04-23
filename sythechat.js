@@ -1354,13 +1354,13 @@ function sythechat_ongroupmessage(message) {
                 date_obj = new Date(delay_stamp);
             }
             human_time = ((date_obj.getHours() < 10) ? "0" + date_obj.getHours() : date_obj.getHours()) + ":" + ((date_obj.getMinutes() < 10) ? "0" + date_obj.getMinutes() : date_obj.getMinutes());
-            sythechat_put_text_in_chat_box(
+            sythechat_put_text_in_chat_box(this_box,
                     '<div class="group_message" from-jid="' + room_nick + '">' +
                         '<div' + (css_class ? ' class="' + css_class + '"' : "") + '>' +
                             '<span class="message_time">[' + human_time + ']</span>' +
                             '<span class="username">' + room_nick + "</span>: " + body +
                         '</div>' +
-                    '</div>');
+                    '</div>', true);
         }
     }
     return true;
