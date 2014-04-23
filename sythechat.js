@@ -1538,3 +1538,15 @@ function send_history_1() {
     }).c('max', '30');
     sythechat_connection.sendIQ(iq);
 }
+/**
+ * 
+ * @returns {String} the current time in time stamp format
+ */
+function time_stamp() {
+    var human_time = "";
+    var date_obj = new Date();
+    
+    human_time = ((date_obj.getHours() < 10) ? "0" + date_obj.getHours() : date_obj.getHours()) + ":" + ((date_obj.getMinutes() < 10) ? "0" + date_obj.getMinutes() : date_obj.getMinutes());
+    
+    return '<span class="message_time">[' + human_time + ']</span>';
+}
