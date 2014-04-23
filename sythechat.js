@@ -1233,6 +1233,7 @@ function sythechat_parse_commands(the_box, message_text) {
                 "type": "chat"
             }).c("body", pm_text);
             sythechat_connection.send(new_message);
+            sythechat_put_in_text_box(the_box, '<div>[Sent PM] ' + pm_user + ' -> ' + pm_text + '</div>, true);
         } else {
             sythechat_send_message(the_box, "Invalid usage! Correct usage: /pm user_name Some message", "system");
         }
