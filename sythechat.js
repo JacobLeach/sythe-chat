@@ -1362,6 +1362,19 @@ function sythechat_ongroupmessage(message) {
     return true;
 }
 
+/** 
+ * @param box The chat box to put the text in
+ * @param {String} text The text to put in the box
+ * @param {Boolean} scroll Whether or not the box should be scrolled to the bottom after putting in the text
+ */
+function sythechat_put_text_in_chat_box(box, text, scroll) {
+    var scrollback_div = $("#sythechat_chatarea").children("#" + box).find(".box_scrollback");
+    scrollback_div.append(text);
+    if(scroll) {
+        scrollback_div.scrollTop(scrollback_div[0].scrollHeight);
+    }
+}
+
 function sythechat_onmessage(message) {
     sythechat_log("ONMESSAGE [" + message + "]");
     var from_jid = $(message).attr('from');
