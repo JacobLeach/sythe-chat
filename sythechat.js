@@ -1203,7 +1203,6 @@ function sythechat_send_message(the_box, message_text, message_type) {
                         scrollback_div.find(".message").last().append('<div class="message_block"><div' + (css_class ? ' class="' + css_class + '"' : "") + '><span class="message_time">[' + human_time + ']</span> ' + message_text + '</div></div>');
                     }
                 }
-                scrollback_div.scrollTop(scrollback_div[0].scrollHeight);
             }
         }
     }
@@ -1360,7 +1359,7 @@ function sythechat_ongroupmessage(message) {
                             '<span class="message_time">[' + human_time + ']</span>' +
                             '<span class="username">' + room_nick + "</span>: " + body +
                         '</div>' +
-                    '</div>', true);
+                    '</div>', false);
         }
     }
     return true;
@@ -1372,10 +1371,13 @@ function sythechat_ongroupmessage(message) {
  * @param {Boolean} scroll Whether or not the box should be scrolled to the bottom after putting in the text
  */
 function sythechat_put_text_in_chat_box(box, text, scroll) {
-    var scrollback_div = $("#sythechat_chatarea").children("#" + box).find(".box_scrollback");
-    scrollback_div.append(text);
-    if(scroll) {
-        scrollback_div.scrollTop(scrollback_div[0].scrollHeight);
+    var chat = $("#sythechat_chatarea").children("#" + box).find(".box_scrollback");
+    var is_at_bottom = chat[0].scrollHeight - chat.scrollTop() === chat.innerHeight();   
+
+    chat.append(text);
+    
+    if(scroll || is_at_bottom) {
+        chat.scrollTop(chat[0].scrollHeight);
     }
 }
 
