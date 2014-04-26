@@ -1227,9 +1227,9 @@ function sythechat_send_message(the_box, message_text, message_type) {
                                 '<div class="message_block">' +
                                     '<div' + (css_class ? ' class="' + css_class + '"' : "") + '>' +
                                         time_stamp() + message_text +
-                                    '</div>
-                                '</div>
-                            '</div>
+                                    '</div>' +
+                                '</div>' +
+                            '</div>', false);
                     }
                 }
             }
