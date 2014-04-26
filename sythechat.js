@@ -1440,6 +1440,7 @@ function sythechat_onmessage(message) {
             sythechat_title_notify("New Message!");
         }
         var body = $(message).children('body').text();
+        var the_box = short_jid;
         if (body) {
             if ($("#sythechat_chatarea").find("#" + short_jid).length == 0) {
                 sythechat_chatbox_create(from_jid, short_jid, false);
@@ -1452,16 +1453,21 @@ function sythechat_onmessage(message) {
             var scrollback_div = $("#sythechat_chatarea").children("#" + short_jid).find(".box_scrollback");
             body = sythechat_process_parsables(body);
             body = sythechat_process_emoticons(body);
-            var date_obj = new Date();
-            var human_time = ((date_obj.getHours() < 10) ? "0" + date_obj.getHours() : date_obj.getHours()) + ":" + ((date_obj.getMinutes() < 10) ? "0" + date_obj.getMinutes() : date_obj.getMinutes());
+            
             if (scrollback_div.find(".message").last().attr("from-jid") == short_jid) {
-                scrollback_div.find(".message").last().find(".message_block").append('<div><span class="message_time">[' + human_time + ']</span> ' + body + '</div>');
-            } else {
-                scrollback_div.append('<div class="message" from-jid="' + short_jid + '"></div>');
-                scrollback_div.find(".message").last().append('<img src="//img.sythe.org/chat/icons_small/user_red.png" class="user_icon" />');
-                scrollback_div.find(".message").last().append('<div class="message_block"><div><span class="message_time">[' + human_time + ']</span> ' + body + '</div></div>');
+                sythechat_put_text_in_chat_box(the_box, '<div>' + time_stamp() + body + '</div>', false);
+            } 
+            else {
+                sythechat_put_text_in_chat_box(the_box,
+                    '<div class="message" from-jid="' + short_jid + '">' +
+                        '<img src="//img.sythe.org/chat/icons_small/user_red.png" class="user_icon" />' +
+                        '<div class="message_block">' +
+                            '<div>' + 
+                                time_stamp() + body +
+                            '</div>' +
+                        '</div>' +
+                    '</div>', false);
             }
-            scrollback_div.scrollTop(scrollback_div[0].scrollHeight);
         }
     }
     return true;
