@@ -1401,7 +1401,8 @@ function sythechat_ongroupmessage(message) {
  */
 function sythechat_put_text_in_chat_box(box, text, scroll) {
     var chat = $("#sythechat_chatarea").children("#" + box).find(".box_scrollback");
-    var is_at_bottom = chat[0].scrollHeight - chat.scrollTop() === chat.innerHeight();   
+    //Sometimes the scrollbar won't go all the way down, so offset by 1
+    var is_at_bottom = chat[0].scrollHeight - chat.scrollTop() <= chat.innerHeight() + 1;   
 
     chat.append(text);
     
