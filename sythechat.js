@@ -1150,33 +1150,45 @@ function sythechat_send_message(the_box, message_text, message_type) {
     if ($("#sythechat_chatarea").children("#" + the_box).length > 0) {
         var target_jid = $("#sythechat_chatarea").children("#" + the_box).attr("data-box-jid");
         var group_chat = (Strophe.getDomainFromJid(target_jid) == conference_service ? true : false);
+        
         if (!message_type) {
             message_type = "";
         }
+        
         var local_only = false;
         var css_class = message_type;
+        
         if (message_type == "system") {
             message_text = '<span class="username">*SYSTEM*</span>: ' + message_text;
             local_only = true;
-        } else if (message_type == "private") {
+        } 
+        else if (message_type == "private") {
             local_only = true;
         }
+        
         if (message_text.length > 0) {
             var new_message = null;
+            
             if (message_text.indexOf("/") == 0) {
+                
                 if (group_chat) {
                     sythechat_parse_commands(the_box, message_text);
-                } else {
+                } 
+                else {
                     sythechat_send_message(the_box, "Sorry, you can't use commands in one-on-one chats!", "system");
                 }
-            } else {
+            } 
+            else {
+                
                 if (!local_only) {
+                    
                     if (group_chat) {
                         new_message = $msg({
                             to: target_jid,
                             "type": "groupchat"
                         }).c("body").t(message_text);
-                    } else {
+                    } 
+                    else {
                         new_message = $msg({
                             to: target_jid,
                             "type": "chat"
@@ -1184,23 +1196,26 @@ function sythechat_send_message(the_box, message_text, message_type) {
                     }
                     sythechat_connection.send(new_message);
                 }
+                
                 var scrollback_div = $("#sythechat_chatarea").children("#" + the_box).find(".box_scrollback");
                 message_text = sythechat_process_parsables(message_text);
                 message_text = sythechat_process_emoticons(message_text);
-                var date_obj = new Date();
-                var human_time = ((date_obj.getHours() < 10) ? "0" + date_obj.getHours() : date_obj.getHours()) + ":" + ((date_obj.getMinutes() < 10) ? "0" + date_obj.getMinutes() : date_obj.getMinutes());
+                
                 if (group_chat) {
                     if (local_only) {
                         scrollback_div.append('<div class="group_message" from-jid="*SYSTEM*"></div>');
-                        scrollback_div.find(".group_message").last().append('<div' + (css_class ? ' class="' + css_class + '"' : "") + '><span class="message_time">[' + human_time + ']</span> ' + message_text + '</div>');
+                        scrollback_div.find(".group_message").last().append('<div' + (css_class ? ' class="' + css_class + '"' : "") + '>' + time_stamp() + message_text + '</div>');
                     }
-                } else {
+                } 
+                else {
+                    
                     if (scrollback_div.find(".message").last().attr("from-jid") == "me") {
-                        scrollback_div.find(".message").last().find(".message_block").append('<div><span class="message_time">[' + human_time + ']</span> ' + message_text + '</div>');
-                    } else {
+                        scrollback_div.find(".message").last().find(".message_block").append('<div>' + time_stamp() + message_text + '</div>');
+                    } 
+                    else {
                         scrollback_div.append('<div class="message" from-jid="me"></div>');
                         scrollback_div.find(".message").last().append('<img src="//img.sythe.org/chat/icons_small/user.png" class="user_icon" />');
-                        scrollback_div.find(".message").last().append('<div class="message_block"><div' + (css_class ? ' class="' + css_class + '"' : "") + '><span class="message_time">[' + human_time + ']</span> ' + message_text + '</div></div>');
+                        scrollback_div.find(".message").last().append('<div class="message_block"><div' + (css_class ? ' class="' + css_class + '"' : "") + '>' + time_stamp() + message_text + '</div></div>');
                     }
                 }
             }
